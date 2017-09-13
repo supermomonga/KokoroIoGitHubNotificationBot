@@ -40,6 +40,7 @@ namespace KokoroIoGitHubNotificationBot
             var eventDescription = $"Unsupported event: `{ eventType }`";
             var eventMessage = "No description";
 
+            // https://developer.github.com/v3/activity/events/types/
             switch(eventType)
             {
                 case EventTypes.IssueComment:
@@ -47,6 +48,8 @@ namespace KokoroIoGitHubNotificationBot
                     eventDescription = $"New comment { action } by [{ data.comment.user.login }]({ data.comment.user.html_url }) on issue [#{ data.issue.number }: { data.issue.title }]({ data.comment.html_url })";
                     eventMessage = $"{ data.comment.body }";
                     break;
+                case EventTypes.Status:
+                    return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
                 default:
                     break;
 
