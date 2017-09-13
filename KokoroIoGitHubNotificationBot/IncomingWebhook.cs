@@ -53,7 +53,7 @@ namespace KokoroIoGitHubNotificationBot
                     break;
                 case EventTypes.Push:
                     IEnumerable<dynamic> commits = data.commits;
-                    eventDescription = $"{ commits.Count() } commits pushed to branch [{ ((string)data["ref"]).Split('/').Last() }]()";
+                    eventDescription = $"{ commits.Count() } commits pushed to branch [{ ((string)data["ref"]).Split('/').Last() }]({ data.compare })";
                     eventMessage = string.Join("\n", commits.Select(c => $"`{ ((string)c.id).Substring(0, 7) }` { c.message } - { c.author.username }"));
                     break;
                 case EventTypes.IssueComment:
