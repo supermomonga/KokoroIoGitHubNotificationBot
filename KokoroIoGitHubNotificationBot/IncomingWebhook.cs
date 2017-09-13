@@ -43,10 +43,22 @@ namespace KokoroIoGitHubNotificationBot
             // https://developer.github.com/v3/activity/events/types/
             switch(eventType)
             {
+                case EventTypes.Issues:
+                    var issue = data.issue;
+                    eventDescription = $"The issue [#{ issue.number }: { issue.title }]({ issue.html_url }) { data.action } by [{ issue.user.login }]({ issue.user.html_url })";
+                    if (data.action == "opened")
+                    {
+                        eventMessage = issue.body;
+                    }
+                    break;
+                case EventTypes.Push:
+                    IEnumerable<dynamic> commits = data.commits;
+                    eventDescription = $"{ commits.Count() } commits pushed";
+                    eventMessage = string.Join("\n", commits.Select(c => $"`{ c.sha }` { c.message } - { c.author.username }"));
+                    break;
                 case EventTypes.IssueComment:
-                    var action = data?.action;
-                    eventDescription = $"New comment { action } by [{ data.comment.user.login }]({ data.comment.user.html_url }) on issue [#{ data.issue.number }: { data.issue.title }]({ data.comment.html_url })";
-                    eventMessage = $"{ data.comment.body }";
+                    eventDescription = $"New comment { data.action } by [{ data.comment.user.login }]({ data.comment.user.html_url }) on issue [#{ data.issue.number }: { data.issue.title }]({ data.comment.html_url })";
+                    eventMessage = data.comment.body;
                     break;
                 case EventTypes.Status:
                     return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
@@ -54,12 +66,9 @@ namespace KokoroIoGitHubNotificationBot
                     break;
 
             }
-            var message = $@"
-__{ repositoryMeta }__
-__{ eventDescription }__
-> { eventMessage }";
-            log.Info($"Channel: { channelId }");
-            log.Info($"Message: { message }");
+            var message = string.IsNullOrEmpty(eventMessage) ?
+                $"__{ repositoryMeta }__\n__{ eventDescription }__" : 
+                $"__{ repositoryMeta }__\n__{ eventDescription }__\n> { eventMessage }";
 
             using (var bot = new BotClient() { AccessToken = accessToken })
             {
