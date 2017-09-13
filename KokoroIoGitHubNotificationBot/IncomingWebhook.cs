@@ -53,7 +53,7 @@ namespace KokoroIoGitHubNotificationBot
             }
             var message = $@"
 __{ repositoryMeta }__
-__{ eventType }__
+__{ eventDescription }__
 > { eventMessage }";
             log.Info($"Channel: { channelId }");
             log.Info($"Message: { message }");
