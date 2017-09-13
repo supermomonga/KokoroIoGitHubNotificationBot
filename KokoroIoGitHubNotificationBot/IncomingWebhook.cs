@@ -58,7 +58,7 @@ namespace KokoroIoGitHubNotificationBot
                 case EventTypes.Push:
                     IEnumerable<dynamic> commits = data.commits;
                     eventDescription = $"{ commits.Count() } commits pushed to branch [{ ((string)data["ref"]).Split('/').Last() }]({ data.compare })";
-                    eventMessage = string.Join("\n", commits.Select(c => $"`[{ ((string)c.id).Substring(0, 7) }]({ c.url })` { c.message } - { c.author.username }"));
+                    eventMessage = string.Join("\n", commits.Select(c => $"[`{ ((string)c.id).Substring(0, 7) }`]({ c.url }) { c.message } - { c.author.username }"));
                     break;
                 case EventTypes.IssueComment:
                     eventDescription = $"New comment { data.action } by [{ data.comment.user.login }]({ data.comment.user.html_url }) on issue [#{ data.issue.number }: { data.issue.title }]({ data.comment.html_url })";
