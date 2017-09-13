@@ -5,10 +5,11 @@
   <ItemGroup>    
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />    
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />    
-    <PackageReference Include="Shipwreck.KokoroIO.Bot" Version="0.0.2-pre" />
+    <PackageReference Include="Shipwreck.KokoroIO.Client" Version="0.0.5-pre" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
