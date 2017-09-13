@@ -38,7 +38,7 @@ namespace KokoroIoGitHubNotificationBot
             var eventType = GetEventType(req);
             var repositoryMeta = $"\\[[{ data.repository.full_name }]({ data.repository.html_url })\\]";
             var eventDescription = $"Unsupported event: `{ eventType }`";
-            var eventMessage = "No description";
+            var eventMessage = "";
 
             // https://developer.github.com/v3/activity/events/types/
             switch(eventType)
