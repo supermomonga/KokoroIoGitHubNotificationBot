@@ -60,6 +60,14 @@ namespace KokoroIoGitHubNotificationBot
                     eventDescription = $"New comment { data.action } by [{ data.comment.user.login }]({ data.comment.user.html_url }) on issue [#{ data.issue.number }: { data.issue.title }]({ data.comment.html_url })";
                     eventMessage = data.comment.body;
                     break;
+                case EventTypes.PullRequest:
+                    var pr = data.pull_request;
+                    eventDescription = $"The pull request [#{ pr.number }: { pr.title }]({ pr.html_url }) { data.action } by [{ pr.user.login }]({ pr.user.html_url })";
+                    if (data.action == "opened")
+                    {
+                        eventMessage = pr.body;
+                    }
+                    break;
                 case EventTypes.Status:
                     return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
                 default:
