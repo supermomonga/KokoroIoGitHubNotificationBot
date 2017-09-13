@@ -51,6 +51,10 @@ namespace KokoroIoGitHubNotificationBot
                         eventMessage = issue.body;
                     }
                     break;
+                case EventTypes.Create:
+                    eventDescription = $"New { data.ref_type } `{ data["ref"] }` created";
+                    eventMessage = data.description;
+                    break;
                 case EventTypes.Push:
                     IEnumerable<dynamic> commits = data.commits;
                     eventDescription = $"{ commits.Count() } commits pushed to branch [{ ((string)data["ref"]).Split('/').Last() }]({ data.compare })";
