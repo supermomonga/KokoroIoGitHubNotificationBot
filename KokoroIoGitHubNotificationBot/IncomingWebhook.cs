@@ -78,9 +78,14 @@ namespace KokoroIoGitHubNotificationBot
                     break;
 
             }
-            var message = string.IsNullOrEmpty(eventMessage) ?
-                $"__{ repositoryMeta }__\n__{ eventDescription }__" : 
-                $"__{ repositoryMeta }__\n__{ eventDescription }__\n> { eventMessage }";
+            var message = $"__{ repositoryMeta }__{ Environment.NewLine }__{ eventDescription }__"; 
+            if (!string.IsNullOrEmpty(eventMessage))
+            {
+                message += Environment.NewLine + string.Join(
+                    Environment.NewLine,
+                    eventMessage.Split(new string[] { Environment.NewLine }, StringSplitOptions.None).Select(l => $"> {l}")
+                    );
+            }
 
             using (var bot = new BotClient() { AccessToken = accessToken })
             {
