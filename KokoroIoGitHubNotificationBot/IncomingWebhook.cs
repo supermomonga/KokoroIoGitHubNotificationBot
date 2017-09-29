@@ -72,6 +72,14 @@ namespace KokoroIoGitHubNotificationBot
                         eventMessage = pr.body;
                     }
                     break;
+                case EventTypes.Label:
+                case EventTypes.Gollum:
+                case EventTypes.Member:
+                case EventTypes.Public:
+                case EventTypes.Watch:
+                case EventTypes.Project:
+                case EventTypes.ProjectColumn:
+                case EventTypes.ProjectCard:
                 case EventTypes.Status:
                     return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
                 default:
