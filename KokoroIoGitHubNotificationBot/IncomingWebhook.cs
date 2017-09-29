@@ -55,8 +55,16 @@ namespace KokoroIoGitHubNotificationBot
                     eventDescription = $"New { data.ref_type } `{ data["ref"] }` created";
                     eventMessage = data.description;
                     break;
+                case EventTypes.Delete:
+                    eventDescription = $"A { data.ref_type } named `{ data["ref"] }` was deleted by [{ data.sender.login }]{ data.sender.html_url }";
+                    eventMessage = data.description;
+                    break;
                 case EventTypes.Push:
                     IEnumerable<dynamic> commits = data.commits;
+                    if (commits.Count() == 0)
+                    {
+                        return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
+                    }
                     eventDescription = $"{ commits.Count() } commits pushed to branch [{ ((string)data["ref"]).Split('/').Last() }]({ data.compare })";
                     eventMessage = string.Join("\n", commits.Select(c => $"[`{ ((string)c.id).Substring(0, 7) }`]({ c.url }) { c.message } - { c.author.username }"));
                     break;
