@@ -8,7 +8,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Azure.WebJobs.Host;
 using Newtonsoft.Json;
-using Shipwreck.KokoroIO;
+using KokoroIO;
 using System.Collections.Generic;
 
 namespace KokoroIoGitHubNotificationBot
