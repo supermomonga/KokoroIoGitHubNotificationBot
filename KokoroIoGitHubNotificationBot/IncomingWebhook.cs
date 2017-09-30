@@ -45,6 +45,11 @@ namespace KokoroIoGitHubNotificationBot
             {
                 case EventTypes.Issues:
                     var issue = data.issue;
+                    var action = data.action;
+                    if (action == "labeled")
+                    {
+                        return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
+                    }
                     eventDescription = $"The issue [#{ issue.number }: { issue.title }]({ issue.html_url }) { data.action } by [{ issue.user.login }]({ issue.user.html_url })";
                     if (data.action == "opened")
                     {
