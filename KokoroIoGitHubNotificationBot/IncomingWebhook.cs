@@ -61,7 +61,7 @@ namespace KokoroIoGitHubNotificationBot
                     eventMessage = data.description;
                     break;
                 case EventTypes.Delete:
-                    eventDescription = $"A { data.ref_type } named `{ data["ref"] }` was deleted by [{ data.sender.login }]{ data.sender.html_url }";
+                    eventDescription = $"A { data.ref_type } named `{ data["ref"] }` was deleted by [{ data.sender.login }]({ data.sender.html_url })";
                     eventMessage = data.description;
                     break;
                 case EventTypes.Push:
