@@ -79,7 +79,7 @@ namespace KokoroIoGitHubNotificationBot
                     break;
                 case EventTypes.PullRequest:
                     var pr = data.pull_request;
-                    eventDescription = $"The pull request [#{ pr.number }: { pr.title }]({ pr.html_url }) { data.action } by [{ pr.sender.login }]({ pr.sender.html_url })";
+                    eventDescription = $"The pull request [#{ pr.number }: { pr.title }]({ pr.html_url }) { data.action } by [{ data.sender.login }]({ data.sender.html_url })";
                     if (data.action == "opened")
                     {
                         eventMessage = pr.body;
