@@ -85,6 +85,19 @@ namespace KokoroIoGitHubNotificationBot
                         eventMessage = pr.body;
                     }
                     break;
+                case EventTypes.PullRequestReviewComment:
+                    if (data.action == "created")
+                    {
+                        var c = data.comment;
+                        eventDescription = $"[New comment]({ data.html_url }) posted to [{ data.pull_request.title }]({ data.pull_request.html_url }) by [{ c.user.login }]({ c.user.html_url })";
+                        eventMessage = data.body;
+                    }
+                    else
+                    {
+                        return req.CreateErrorResponse(HttpStatusCode.OK, "OK");
+                    }
+                    break;
+                case EventTypes.PullRequestReview:
                 case EventTypes.Label:
                 case EventTypes.Gollum:
                 case EventTypes.Member:
