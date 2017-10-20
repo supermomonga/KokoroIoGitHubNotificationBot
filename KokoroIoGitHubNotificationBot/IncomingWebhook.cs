@@ -15,7 +15,7 @@ namespace KokoroIoGitHubNotificationBot
 {
     public enum EventTypes
     {
-        Unknown = 0, CommitComment, Create, Delete, Deployment, DeploymentStatus, Download, Follow, Fork, ForkApply, Gist, Gollum, Installation, InstallationRepositories, IssueComment, Issues, Label, MarketplacePurchase, Member, Membership, Milestone, Organization, OrgBlock, PageBuild, ProjectCard, ProjectColumn, Project, Public, PullRequest, PullRequestReview, PullRequestReviewComment, Push, Release, Repository, Status, Team, TeamAdd, Watch
+        Unknown = 0, Ping, CommitComment, Create, Delete, Deployment, DeploymentStatus, Download, Follow, Fork, ForkApply, Gist, Gollum, Installation, InstallationRepositories, IssueComment, Issues, Label, MarketplacePurchase, Member, Membership, Milestone, Organization, OrgBlock, PageBuild, ProjectCard, ProjectColumn, Project, Public, PullRequest, PullRequestReview, PullRequestReviewComment, Push, Release, Repository, Status, Team, TeamAdd, Watch
     }
     public static class IncomingWebhook
     {
@@ -43,6 +43,10 @@ namespace KokoroIoGitHubNotificationBot
             // https://developer.github.com/v3/activity/events/types/
             switch(eventType)
             {
+                case EventTypes.Ping:
+                    eventDescription = $"Ping received.";
+                    eventMessage = data.zen;
+                    break;
                 case EventTypes.Issues:
                     var issue = data.issue;
                     var action = data.action;
@@ -123,6 +127,7 @@ namespace KokoroIoGitHubNotificationBot
 
             using (var bot = new BotClient() { AccessToken = accessToken })
             {
+                bot.EndPoint = "https://proxy.kokoro.io/api";
                 await bot.PostMessageAsync(channelId, message);
             }
 
