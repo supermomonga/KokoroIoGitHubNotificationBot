@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using KokoroIO;
 using Microsoft.AspNetCore.Http;
@@ -152,10 +153,12 @@ namespace KokoroIoGitHubNotificationBot
                         );
                 }
 
-                using (var bot = new BotClient() { AccessToken = accessToken })
+                using (var bot = new BotClient()
                 {
-                    bot.EndPoint = "https://kokoro.io/api";
-                    await bot.PostMessageAsync(channelId, message);
+                    AccessToken = accessToken
+                })
+                {
+                    await bot.PostMessageAsync(channelId, message).ConfigureAwait(false);
                 }
 
                 CreateResponse(context, HttpStatusCode.OK, message);
@@ -165,6 +168,13 @@ namespace KokoroIoGitHubNotificationBot
         private static void CreateResponse(HttpContext context, HttpStatusCode statusCode, string message)
         {
             context.Response.StatusCode = (int)statusCode;
+            if (!string.IsNullOrEmpty(message))
+            {
+                context.Response.ContentType = "text/plain; charset=utf-8";
+
+                var b = new UTF8Encoding(false).GetBytes(message);
+                context.Response.Body.Write(b, 0, b.Length);
+            }
         }
     }
 }
