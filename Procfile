@@ -1,1 +1,0 @@
-web: dotnet run --project ./KokoroIoGitHubNotificationBot/KokoroIoGitHubNotificationBot.csproj
