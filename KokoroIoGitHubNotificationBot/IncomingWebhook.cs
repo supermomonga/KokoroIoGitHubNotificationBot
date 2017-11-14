@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using KokoroIO;
@@ -16,17 +17,64 @@ namespace KokoroIoGitHubNotificationBot
     public class IncomingWebhook
     {
         private readonly IConfigurationRoot Configuration;
-        private readonly string accessToken;
+        private readonly string AccessToken;
+        private readonly byte[] Secret;
 
         public IncomingWebhook(IConfigurationRoot configuration)
         {
             Configuration = configuration;
-            accessToken = Configuration["AccessToken"];
+            AccessToken = Configuration["AccessToken"];
+            var secret = Configuration["WebhookSecret"];
+            Secret = string.IsNullOrEmpty(secret) ? null : Encoding.ASCII.GetBytes(secret);
         }
 
         public async Task HandleAsync(HttpContext context)
         {
-            using (var tr = new StreamReader(context.Request.Body))
+            StreamReader tr;
+            if (Secret != null)
+            {
+                context.Request.Headers.TryGetValue("X-Hub-Signature", out var sigs);
+                var signatureHeader = sigs.FirstOrDefault();
+
+                if (string.IsNullOrEmpty(signatureHeader))
+                {
+                    CreateResponse(context, HttpStatusCode.BadRequest, "Missing HTTP Header: X-Hub-Signature");
+                    return;
+                }
+                if (!signatureHeader.StartsWith("sha1=", StringComparison.OrdinalIgnoreCase))
+                {
+                    CreateResponse(context, HttpStatusCode.BadRequest, "Unknown Hash Algorithm");
+                    return;
+                }
+
+                var signature = Enumerable.Range(0, (signatureHeader.Length - 5) / 2)
+                                            .Select(i => (byte)(HexToInt(signatureHeader[5 + 2 * i]) * 16
+                                                            + HexToInt(signatureHeader[6 + 2 * i])));
+
+                byte[] body;
+                using (var ms = new MemoryStream((int)(context.Request.ContentLength ?? 1024)))
+                {
+                    await context.Request.Body.CopyToAsync(ms).ConfigureAwait(false);
+                    body = ms.ToArray();
+                }
+                var hmac = new HMACSHA1(Secret);
+
+                var computed = hmac.ComputeHash(body);
+
+                if (!computed.SequenceEqual(signature))
+                {
+                    CreateResponse(context, HttpStatusCode.BadRequest, "Invalid X-Hub-Signature");
+                    return;
+                }
+
+                tr = new StreamReader(new MemoryStream(body));
+            }
+            else
+            {
+                tr = new StreamReader(context.Request.Body);
+            }
+
+            using (tr)
             using (var jr = new JsonTextReader(tr))
             {
                 dynamic data = await JObject.LoadAsync(jr).ConfigureAwait(false);
@@ -37,7 +85,7 @@ namespace KokoroIoGitHubNotificationBot
                     channelId = sv.FirstOrDefault();
                 }
 
-                if (string.IsNullOrEmpty(accessToken))
+                if (string.IsNullOrEmpty(AccessToken))
                 {
                     CreateResponse(context, HttpStatusCode.BadRequest, "Missing configration: AccessToken");
                     return;
@@ -155,7 +203,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 using (var bot = new BotClient()
                 {
-                    AccessToken = accessToken
+                    AccessToken = AccessToken
                 })
                 {
                     await bot.PostMessageAsync(channelId, message).ConfigureAwait(false);
@@ -175,6 +223,23 @@ namespace KokoroIoGitHubNotificationBot
                 var b = new UTF8Encoding(false).GetBytes(message);
                 context.Response.Body.Write(b, 0, b.Length);
             }
+        }
+
+        private static int HexToInt(char c)
+        {
+            if ('0' <= c && c <= '9')
+            {
+                return c - '0';
+            }
+            if ('A' <= c && c <= 'F')
+            {
+                return c - 'A' + 10;
+            }
+            if ('a' <= c && c <= 'f')
+            {
+                return c - 'a' + 10;
+            }
+            throw new ArgumentOutOfRangeException();
         }
     }
 }
