@@ -1,1 +1,0 @@
-web: dotnet ~/heroku_output/KokoroIoGitHubNotificationBot.dll
