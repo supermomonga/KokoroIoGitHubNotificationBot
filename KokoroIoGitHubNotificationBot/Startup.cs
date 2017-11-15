@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -44,6 +45,10 @@ namespace KokoroIoGitHubNotificationBot
 
             var webhook = new IncomingWebhook(Configuration);
             routeBuilder.MapPost("incoming", webhook.HandleAsync);
+            routeBuilder.MapGet("/", context => {
+                    context.Response.ContentType = "text/html";
+                    return context.Response.WriteAsync("<p>Please use /incoming?channel=XXXXXXXX<p>");
+                });
 
             app.UseRouter(routeBuilder.Build());
         }
