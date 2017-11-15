@@ -45,7 +45,7 @@ namespace KokoroIoGitHubNotificationBot
 
             var webhook = new IncomingWebhook(Configuration);
             routeBuilder.MapPost("incoming", webhook.HandleAsync);
-            routeBuilder.MapGet("/", context => {
+            routeBuilder.MapGet("", context => {
                     context.Response.ContentType = "text/html";
                     return context.Response.WriteAsync("<p>Please use /incoming?channel=XXXXXXXX<p>");
                 });
