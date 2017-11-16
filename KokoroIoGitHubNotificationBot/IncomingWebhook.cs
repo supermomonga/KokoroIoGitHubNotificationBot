@@ -53,7 +53,7 @@ namespace KokoroIoGitHubNotificationBot
                                     : new StreamReader(context.Request.Body))
                 using (var jr = new JsonTextReader(tr))
                 {
-                    await HandleEventAsync(context, jr).ConfigureAwait(false);
+                    HandleEventAsync(context, jr).GetHashCode();
 
                     WriteResponse(context, HttpStatusCode.OK, string.Empty);
                 }
