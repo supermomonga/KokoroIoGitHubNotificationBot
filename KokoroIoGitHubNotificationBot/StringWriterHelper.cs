@@ -55,14 +55,17 @@ namespace KokoroIoGitHubNotificationBot
 
         public static void WriteBlockQoute(this StringWriter sw, string s)
         {
-            using (var sr = new StringReader(s))
+            if (!string.IsNullOrEmpty(s))
             {
-                for (var l = sr.ReadLine(); l != null; l = sr.ReadLine())
+                using (var sr = new StringReader(s))
                 {
-                    if (l.Length > 0)
+                    for (var l = sr.ReadLine(); l != null; l = sr.ReadLine())
                     {
-                        sw.Write("> ");
-                        sw.WriteLine(l);
+                        if (l.Length > 0)
+                        {
+                            sw.Write("> ");
+                            sw.WriteLine(l);
+                        }
                     }
                 }
             }

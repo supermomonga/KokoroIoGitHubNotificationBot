@@ -252,7 +252,7 @@ namespace KokoroIoGitHubNotificationBot
                 sw.Write(data.RefType);
                 sw.Write(" `");
                 sw.Write(data.Ref);
-                sw.WriteLine("` created by ");
+                sw.Write("` created by ");
 
                 data.Sender.WriteLinkTo(sw);
 
@@ -276,7 +276,7 @@ namespace KokoroIoGitHubNotificationBot
                 sw.Write(data.RefType);
                 sw.Write(" named `");
                 sw.Write(data.Ref);
-                sw.WriteLine("` was deleted by ");
+                sw.Write("` was deleted by ");
                 data.Sender.WriteLinkTo(sw);
                 sw.WriteLine(".__");
 
@@ -329,7 +329,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.Write("__New comment ");
                 sw.Write(data.Action.ToString().ToLowerInvariant());
-                sw.WriteLine(" by ");
+                sw.Write(" by ");
 
                 data.Sender.WriteLinkTo(sw);
 
@@ -360,7 +360,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.Write("__New comment ");
                 sw.Write(data.Action.ToString().ToLowerInvariant());
-                sw.WriteLine(" by ");
+                sw.Write(" by ");
 
                 data.Sender.WriteLinkTo(sw);
 
