@@ -1,0 +1,3 @@
+[submodule "github-rest"]
+	path = github-rest
+	url = https://github.com/pgrho/github-rest.git
