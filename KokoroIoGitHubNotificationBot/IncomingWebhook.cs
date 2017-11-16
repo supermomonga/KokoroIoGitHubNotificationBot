@@ -389,7 +389,7 @@ namespace KokoroIoGitHubNotificationBot
                 sw.Write("__The pull request ");
 
                 pr.WriteLinkTo(sw);
-
+                sw.Write(" ");
                 sw.Write(data.Action.ToString().ToLowerInvariant());
                 sw.Write(" by ");
 
