@@ -38,7 +38,7 @@ namespace KokoroIoGitHubNotificationBot
 
         public static void WriteLinkTo(this Account account, StringWriter sw)
         {
-            sw.Write("[#");
+            sw.Write("[");
             sw.Write(account.Login);
             sw.Write("](");
             sw.Write(account.HtmlUrl);
