@@ -5,8 +5,9 @@ ENV DOTNET_SKIP_FIRST_TIME_EXPERIENCE=-1
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=-1
 
 WORKDIR /app/src/KokoroIoGitHubNotificationBot
-COPY ./KokoroIoGitHubNotificationBot/KokoroIoGitHubNotificationBot.csproj ./KokoroIoGitHubNotificationBot/KokoroIoGitHubNotificationBot.jsproj
+COPY ./KokoroIoGitHubNotificationBot/KokoroIoGitHubNotificationBot.csproj ./KokoroIoGitHubNotificationBot/KokoroIoGitHubNotificationBot.csproj
 COPY ./KokoroIoGitHubNotificationBot.sln ./KokoroIoGitHubNotificationBot.sln
+COPY ./github-rest ./github-rest
 RUN dotnet restore
 COPY ./KokoroIoGitHubNotificationBot ./KokoroIoGitHubNotificationBot
 RUN dotnet publish -c Release -o /app/bin -p:PublishWithAspNetCoreTargetManifest=false
