@@ -335,7 +335,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.Write(" on issue ");
 
-                data.Issue.WriteLinkTo(sw, data.Comment.Url);
+                data.Issue.WriteLinkTo(sw, data.Comment.HtmlUrl);
 
                 sw.WriteLine(".__");
 
