@@ -390,7 +390,25 @@ namespace KokoroIoGitHubNotificationBot
 
                 pr.WriteLinkTo(sw);
                 sw.Write(" ");
-                sw.Write(data.Action.ToString().ToLowerInvariant());
+
+                if (data.Action == PullRequestAction.ReviewRequested)
+                {
+                    sw.Write("requested review");
+                    var max = (pr.RequestedReviewers?.Length ?? 0) - 1;
+                    if (max >= 0)
+                    {
+                        for (int i = 0; i <= max; i++)
+                        {
+                            var rr = pr.RequestedReviewers[i];
+                            sw.Write(i == 0 ? " to " : i == max ? " and " : ", ");
+                            rr.WriteLinkTo(sw);
+                        }
+                    }
+                }
+                else
+                {
+                    sw.Write(data.Action.ToString().ToLowerInvariant());
+                }
                 sw.Write(" by ");
 
                 data.Sender.WriteLinkTo(sw);
