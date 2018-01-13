@@ -366,7 +366,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.Write(" on pull request ");
 
-                data.PullRequest.WriteLinkTo(sw, data.Comment.Url);
+                data.PullRequest.WriteLinkTo(sw, data.Comment.HtmlUrl);
 
                 sw.WriteLine(".__");
 
