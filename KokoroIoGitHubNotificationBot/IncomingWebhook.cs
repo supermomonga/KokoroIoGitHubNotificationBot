@@ -632,7 +632,7 @@ namespace KokoroIoGitHubNotificationBot
                 AccessToken = AccessToken
             })
             {
-                await bot.PostMessageAsync(channelId, message).ConfigureAwait(false);
+                await bot.PostMessageAsync(channelId, message, expandEmbedContents: false).ConfigureAwait(false);
             }
         }
 
