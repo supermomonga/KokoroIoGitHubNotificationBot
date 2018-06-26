@@ -481,22 +481,22 @@ namespace KokoroIoGitHubNotificationBot
             => HandleUnknownEventAsync(context, jsonReader);
 
         private Task HandleDeploymentEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleDeploymentStatusEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleDownloadEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleFollowEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleForkEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleForkApplyEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         private Task HandleGistEventAsync(HttpContext context, JsonReader jsonReader)
             => HandleUnknownEventAsync(context, jsonReader);
@@ -538,7 +538,7 @@ namespace KokoroIoGitHubNotificationBot
             => HandleUnknownEventAsync(context, jsonReader);
 
         private Task HandleWatchEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
+            => Task.CompletedTask;
 
         #endregion Unknown events
 
