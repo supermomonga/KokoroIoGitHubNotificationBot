@@ -199,7 +199,7 @@ namespace KokoroIoGitHubNotificationBot
             {
                 data.Repository.WriteLinkLineTo(sw);
                 sw.WriteLine("__Ping received.__");
-                sw.WriteBlockQoute(data.Zen);
+                sw.WriteBlockQuote(data.Zen);
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
@@ -233,7 +233,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 if (data.Action == IssueAction.Opened)
                 {
-                    sw.WriteBlockQoute(issue.Body);
+                    sw.WriteBlockQuote(issue.Body);
                 }
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
@@ -258,7 +258,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.WriteLine($".__");
 
-                sw.WriteBlockQoute(data.Description);
+                sw.WriteBlockQuote(data.Description);
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
@@ -339,7 +339,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.WriteLine(".__");
 
-                sw.WriteBlockQoute(data.Comment.Body);
+                sw.WriteBlockQuote(data.Comment.Body);
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
@@ -370,7 +370,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 sw.WriteLine(".__");
 
-                sw.WriteBlockQoute(data.Comment.Body);
+                sw.WriteBlockQuote(data.Comment.Body);
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
@@ -417,7 +417,7 @@ namespace KokoroIoGitHubNotificationBot
 
                 if (data.Action == PullRequestAction.Opened)
                 {
-                    sw.WriteBlockQoute(pr.Body);
+                    sw.WriteBlockQuote(pr.Body);
                 }
 
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);

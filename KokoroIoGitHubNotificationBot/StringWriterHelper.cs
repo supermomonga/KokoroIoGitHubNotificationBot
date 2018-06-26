@@ -54,7 +54,7 @@ namespace KokoroIoGitHubNotificationBot
             sw.Write(")");
         }
 
-        public static void WriteBlockQoute(this StringWriter sw, string s)
+        public static void WriteBlockQuote(this StringWriter sw, string s)
         {
             if (!string.IsNullOrEmpty(s))
             {
