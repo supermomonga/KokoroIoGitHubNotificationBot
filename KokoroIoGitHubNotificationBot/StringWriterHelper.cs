@@ -72,7 +72,7 @@ namespace KokoroIoGitHubNotificationBot
             }
         }
 
-        private static void WriteShortHash(this StringWriter sw, string cid)
+        internal static void WriteShortHash(this StringWriter sw, string cid)
         {
             for (var i = 0; i < 7; i++)
             {

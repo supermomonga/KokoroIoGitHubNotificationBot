@@ -264,6 +264,41 @@ namespace KokoroIoGitHubNotificationBot
             }
         }
 
+        private async Task HandleCommitCommentEventAsync(HttpContext context, JsonReader jsonReader)
+        {
+            var data = DeserializeAs<CommitCommentEventPayload>(jsonReader);
+
+            if (data.Action != EditAction.Created)
+            {
+                return;
+            }
+
+            using (var sw = new StringWriter())
+            {
+                data.Repository.WriteLinkLineTo(sw);
+
+                sw.Write("__New comment ");
+                sw.Write(data.Action.ToString().ToLowerInvariant());
+                sw.Write(" by ");
+
+                data.Sender.WriteLinkTo(sw);
+
+                sw.Write(" on commit ");
+
+                sw.Write("[`");
+                sw.WriteShortHash(data.Comment.CommitId);
+                sw.Write("`](");
+                sw.Write(data.Comment.HtmlUrl);
+                sw.Write(")");
+
+                sw.WriteLine(".__");
+
+                sw.WriteBlockQuote(data.Comment.Body);
+
+                await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
+            }
+        }
+
         private async Task HandleDeleteEventAsync(HttpContext context, JsonReader jsonReader)
         {
             var data = DeserializeAs<DeleteEventPayload>(jsonReader);
@@ -344,6 +379,7 @@ namespace KokoroIoGitHubNotificationBot
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
         }
+
 
         private async Task HandlePullRequestReviewCommentEventAsync(HttpContext context, JsonReader jsonReader)
         {
@@ -429,31 +465,52 @@ namespace KokoroIoGitHubNotificationBot
         #region No action
 
         private Task HandlePullRequestReviewEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleLabelEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleGollumEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleMemberEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleProjectCardEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleProjectColumnEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleProjectEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandlePublicEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
 
         private Task HandleStatusEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.FromResult(0);
+            => Task.CompletedTask;
+
+        private Task HandleDeploymentEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleDeploymentStatusEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleDownloadEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleFollowEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleForkEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleForkApplyEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
+
+        private Task HandleWatchEventAsync(HttpContext context, JsonReader jsonReader)
+            => Task.CompletedTask;
 
         #endregion No action
 
@@ -476,27 +533,6 @@ namespace KokoroIoGitHubNotificationBot
                 await PostMessageAsync(GetChannelId(context), sw.ToString()).ConfigureAwait(false);
             }
         }
-
-        private Task HandleCommitCommentEventAsync(HttpContext context, JsonReader jsonReader)
-            => HandleUnknownEventAsync(context, jsonReader);
-
-        private Task HandleDeploymentEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
-
-        private Task HandleDeploymentStatusEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
-
-        private Task HandleDownloadEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
-
-        private Task HandleFollowEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
-
-        private Task HandleForkEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
-
-        private Task HandleForkApplyEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
 
         private Task HandleGistEventAsync(HttpContext context, JsonReader jsonReader)
             => HandleUnknownEventAsync(context, jsonReader);
@@ -536,9 +572,6 @@ namespace KokoroIoGitHubNotificationBot
 
         private Task HandleTeamAddEventAsync(HttpContext context, JsonReader jsonReader)
             => HandleUnknownEventAsync(context, jsonReader);
-
-        private Task HandleWatchEventAsync(HttpContext context, JsonReader jsonReader)
-            => Task.CompletedTask;
 
         #endregion Unknown events
 
