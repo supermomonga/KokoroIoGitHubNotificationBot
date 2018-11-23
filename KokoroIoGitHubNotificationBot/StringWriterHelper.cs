@@ -54,7 +54,7 @@ namespace KokoroIoGitHubNotificationBot
             sw.Write(")");
         }
 
-        public static void WriteBlockQoute(this StringWriter sw, string s)
+        public static void WriteBlockQuote(this StringWriter sw, string s)
         {
             if (!string.IsNullOrEmpty(s))
             {
@@ -72,7 +72,7 @@ namespace KokoroIoGitHubNotificationBot
             }
         }
 
-        private static void WriteShortHash(this StringWriter sw, string cid)
+        internal static void WriteShortHash(this StringWriter sw, string cid)
         {
             for (var i = 0; i < 7; i++)
             {
